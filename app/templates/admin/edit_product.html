@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        /* Page Styling */
+        body {
+            background-color: #f4f4f9;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 700px;
+            margin: 50px auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #6a1b9a;
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-control, .form-control-file, .form-control select {
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .form-control:focus, .form-control-file:focus {
+            border-color: #6a1b9a;
+            box-shadow: 0 0 5px rgba(106, 27, 154, 0.5);
+        }
+
+        .btn-primary {
+            background-color: #6a1b9a;
+            border: none;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #4a148c;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+        }
+
+        .form-control-file {
+            padding-top: 10px;
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 20px;
+            }
+        }
+        /* Navbar Styles */
+        .nav-buttons {
+           display: flex;
+           justify-content: center;
+           flex-wrap: wrap;
+           gap: 15px;
+           margin: 20px 0;
+       }
+    
+       .nav-buttons a {
+           padding: 12px 25px;
+           border-radius: 25px;
+           font-size: 16px;
+           color: #fff;
+           text-decoration: none;
+           transition: all 0.3s ease;
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+       }
+    
+       .nav-buttons a.btn-success {
+           background-color: #28a745;
+           border: 2px solid #28a745;
+       }
+    
+       .nav-buttons a.btn-info {
+           background-color: #17a2b8;
+           border: 2px solid #17a2b8;
+       }
+    
+       .nav-buttons a.btn-danger {
+           background-color: #dc3545;
+           border: 2px solid #dc3545;
+       }
+    
+       /* Button Hover Effects */
+       .nav-buttons a:hover {
+           transform: scale(1.05);
+           box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+       }
+    
+       /* Animation Effects */
+       @keyframes fadeInUp {
+           0% {
+               opacity: 0;
+               transform: translateY(20px);
+           }
+    
+           100% {
+               opacity: 1;
+               transform: translateY(0);
+           }
+       }
+    
+       .nav-buttons a {
+           animation: fadeInUp 1s ease both;
+       }
+    
+       .nav-buttons a:nth-child(1) {
+           animation-delay: 0.1s;
+       }
+    
+       .nav-buttons a:nth-child(2) {
+           animation-delay: 0.2s;
+       }
+    
+       .nav-buttons a:nth-child(3) {
+           animation-delay: 0.3s;
+       }
+    
+       .nav-buttons a:nth-child(4) {
+           animation-delay: 0.4s;
+       }
+    
+       .nav-buttons a:nth-child(5) {
+           animation-delay: 0.5s;
+       }
+    
+       .nav-buttons a:nth-child(6) {
+           animation-delay: 0.6s;
+       }
+    </style>
+</head>
+<body>
+      <!-- Navigation Buttons -->
+      <div class="nav-buttons text-center">
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-success">admin_dashboard</a>
+        <a href="{% url 'add_product' %}" class="btn btn-success">Add New Product</a>
+        <a href="{% url 'admin_product_list' %}" class="btn btn-success">Product List</a>
+        <a href="{% url 'admin_view_referrals' %}" class="btn btn-info">View Referral History</a>
+        <a href="{% url 'admin_payment_history' %}" class="btn btn-info">Payment History</a>
+        <a href="{% url 'referral_profits' %}" class="btn btn-info">Referral Profits</a>
+        <a href="{% url 'admin_user_list' %}" class="btn btn-info">User list</a>
+        <a href="{% url 'logout_admin' %}" class="btn btn-danger">Logout</a>
+    </div>
+    <div class="container">
+        <h2>Edit Product</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Product Name:</label>
+                <input type="text" class="form-control" name="name" value="{{ product.name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea class="form-control" name="description" rows="5" required>{{ product.description }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="number" class="form-control" name="price" value="{{ product.price }}" required>
+            </div>
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <select name="category" class="form-control">
+                    {% for category in categories %}
+                    <option value="{{ category.id }}" {% if product.category.id == category.id %}selected{% endif %}>{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="image">Image:</label>
+                <input type="file" class="form-control-file" name="image">
+            </div>
+            <button type="submit" class="btn btn-primary">Update Product</button>
+        </form>
+    </div>
+</body>
+</html>

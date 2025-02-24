@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light gray background */
+            font-family: 'Arial', sans-serif; /* Font style */
+        }
+        .container {
+            margin-top: 50px;
+            padding: 30px;
+            border-radius: 10px;
+            background-color: white; /* White background for form */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+        }
+        h2 {
+            color: #343a40; /* Dark gray for headings */
+            font-weight: bold; /* Bold text */
+            margin-bottom: 30px; /* Space below the heading */
+            text-align: center; /* Centered heading */
+        }
+        .form-control, .form-control-file {
+            border-radius: 20px; /* Rounded corners for inputs */
+            border: 1px solid #ced4da; /* Custom border */
+            transition: border-color 0.3s ease; /* Transition effect */
+        }
+        .form-control:focus, .form-control-file:focus {
+            border-color: #28a745; /* Green border on focus */
+            box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* Shadow on focus */
+        }
+        .btn-primary {
+            background-color: #007bff; /* Primary button color */
+            border: none; /* No border */
+            border-radius: 20px; /* Rounded corners */
+            padding: 10px 20px; /* Add padding */
+            font-size: 16px; /* Larger font size */
+            font-weight: bold; /* Bold text */
+            transition: background-color 0.3s ease, transform 0.3s ease; /* Transition for button */
+        }
+        .btn-primary:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            transform: translateY(-2px); /* Lift effect on hover */
+        }
+        /* Media Query for Responsiveness */
+        @media (max-width: 576px) {
+            .container {
+                padding: 20px; /* Less padding on small screens */
+            }
+            h2 {
+                font-size: 24px; /* Smaller heading on small screens */
+            }
+        }
+        /* Navbar Styles */
+        .nav-buttons {
+           display: flex;
+           justify-content: center;
+           flex-wrap: wrap;
+           gap: 15px;
+           margin: 20px 0;
+       }
+
+       .nav-buttons a {
+           padding: 12px 25px;
+           border-radius: 25px;
+           font-size: 16px;
+           color: #fff;
+           text-decoration: none;
+           transition: all 0.3s ease;
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+       }
+
+       .nav-buttons a.btn-success {
+           background-color: #28a745;
+           border: 2px solid #28a745;
+       }
+
+       .nav-buttons a.btn-info {
+           background-color: #17a2b8;
+           border: 2px solid #17a2b8;
+       }
+
+       .nav-buttons a.btn-danger {
+           background-color: #dc3545;
+           border: 2px solid #dc3545;
+       }
+
+       /* Button Hover Effects */
+       .nav-buttons a:hover {
+           transform: scale(1.05);
+           box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+       }
+
+       /* Animation Effects */
+       @keyframes fadeInUp {
+           0% {
+               opacity: 0;
+               transform: translateY(20px);
+           }
+
+           100% {
+               opacity: 1;
+               transform: translateY(0);
+           }
+       }
+
+       .nav-buttons a {
+           animation: fadeInUp 1s ease both;
+       }
+
+       .nav-buttons a:nth-child(1) {
+           animation-delay: 0.1s;
+       }
+
+       .nav-buttons a:nth-child(2) {
+           animation-delay: 0.2s;
+       }
+
+       .nav-buttons a:nth-child(3) {
+           animation-delay: 0.3s;
+       }
+
+       .nav-buttons a:nth-child(4) {
+           animation-delay: 0.4s;
+       }
+
+       .nav-buttons a:nth-child(5) {
+           animation-delay: 0.5s;
+       }
+
+       .nav-buttons a:nth-child(6) {
+           animation-delay: 0.6s;
+       }
+    </style>
+</head>
+<body>
+    <!-- Navigation Buttons -->
+   <!-- Navigation Buttons -->
+   <div class="nav-buttons text-center">
+    <a href="{% url 'admin_dashboard' %}" class="btn btn-success">admin_dashboard</a>
+    <a href="{% url 'add_product' %}" class="btn btn-success">Add New Product</a>
+    <a href="{% url 'admin_product_list' %}" class="btn btn-success">Product List</a>
+    <a href="{% url 'admin_view_referrals' %}" class="btn btn-info">View Referral History</a>
+    <a href="{% url 'admin_payment_history' %}" class="btn btn-info">Payment History</a>
+    <a href="{% url 'referral_profits' %}" class="btn btn-info">Referral Profits</a>
+    <a href="{% url 'admin_user_list' %}" class="btn btn-info">User list</a>
+    <a class="btn btn-info" href="{% url 'admin_feedback_list' %}">Admin Feedback List</a> <!-- Only for admin users -->
+    <a href="{% url 'logout_admin' %}" class="btn btn-danger">Logout</a>
+</div>
+    <div class="container">
+        <h2>Add Product</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label for="name">Product Name:</label>
+                    <input type="text" class="form-control" name="name" required>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="price">Price:</label>
+                    <input type="number" class="form-control" name="price" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label for="description">Description:</label>
+                    <textarea class="form-control" name="description" required></textarea>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="category">Category:</label>
+                    <select name="category" class="form-control" required>
+                        <option value="" disabled selected>Select Category</option>
+                        {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label for="image">Image:</label>
+                    <input type="file" class="form-control-file" name="image" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Product</button>
+        </form>
+    </div>
+</body>
+</html>

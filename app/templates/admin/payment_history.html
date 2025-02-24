@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Payment Histories</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <!-- CSS Styles -->
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .heading {
+            text-align: center;
+            color: #6a1b9a; /* Stylish purple */
+            animation: fadeInDown 1s ease-in-out;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .card {
+            background: #ffffff; /* White background for contrast */
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            padding: 20px;
+            width: 300px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h4 {
+            color: #6a1b9a; /* Stylish purple */
+        }
+
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .paginate-link {
+            color: #6a1b9a; /* Stylish purple */
+            text-decoration: none;
+            font-size: 16px;
+            margin: 0 10px;
+            padding: 8px 15px;
+            border: 2px solid #6a1b9a; /* Stylish purple */
+            border-radius: 5px;
+            background-color: #ffffff; /* White background */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .paginate-link:hover {
+            background-color: #6a1b9a; /* Stylish purple on hover */
+            color: white;
+        }
+
+        @keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chart-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            padding: 20px 0;
+        }
+
+        .chart {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(to top, #9c27b0 0%, #9c27b0 calc(100% - {{ order_count }}%), transparent calc(100% - {{ order_count }}%), transparent 100%); /* Stylish purple gradient */
+            text-align: center;
+            line-height: 200px;
+            color: white;
+            font-weight: bold;
+            border-radius: 50%; /* Circular shape */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .chart:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            .card-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .card {
+                width: 90%;
+            }
+
+            .chart {
+                width: 150px;
+                height: 150px;
+            }
+        }
+         /* Navbar Styles */
+         .nav-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+ 
+        .nav-buttons a {
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+ 
+        .nav-buttons a.btn-success {
+            background-color: #28a745;
+            border: 2px solid #28a745;
+        }
+ 
+        .nav-buttons a.btn-info {
+            background-color: #17a2b8;
+            border: 2px solid #17a2b8;
+        }
+ 
+        .nav-buttons a.btn-danger {
+            background-color: #dc3545;
+            border: 2px solid #dc3545;
+        }
+ 
+        /* Button Hover Effects */
+        .nav-buttons a:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+ 
+        /* Animation Effects */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+ 
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+ 
+        .nav-buttons a {
+            animation: fadeInUp 1s ease both;
+        }
+ 
+        .nav-buttons a:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+ 
+        .nav-buttons a:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+ 
+        .nav-buttons a:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+ 
+        .nav-buttons a:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+ 
+        .nav-buttons a:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+ 
+        .nav-buttons a:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+    </style>
+</head>
+
+<body>
+
+     <!-- Navigation Buttons -->
+     <!-- Navigation Buttons -->
+     <div class="nav-buttons text-center">
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-success">admin_dashboard</a>
+        <a href="{% url 'add_product' %}" class="btn btn-success">Add New Product</a>
+        <a href="{% url 'admin_product_list' %}" class="btn btn-success">Product List</a>
+        <a href="{% url 'admin_view_referrals' %}" class="btn btn-info">View Referral History</a>
+        <a href="{% url 'admin_payment_history' %}" class="btn btn-info">Payment History</a>
+        <a href="{% url 'referral_profits' %}" class="btn btn-info">Referral Profits</a>
+        <a href="{% url 'admin_user_list' %}" class="btn btn-info">User list</a>
+        <a class="btn btn-info" href="{% url 'admin_feedback_list' %}">Admin Feedback List</a> <!-- Only for admin users -->
+        <a href="{% url 'logout_admin' %}" class="btn btn-danger">Logout</a>
+    </div>
+    <h2 class="heading">All Payment Histories</h2>
+    
+    <h3>Completed Orders</h3>
+    <div class="card-container">
+        {% for order in completed_orders %}
+        <div class="card">
+            <h4>Order ID: {{ order.id }}</h4>
+            <p><strong>User:</strong> {{ order.user.username }}</p>
+            <p><strong>Product:</strong> {{ order.product.name }}</p>
+            <p><strong>Quantity:</strong> {{ order.quantity }}</p>
+            <p><strong>Total Price:</strong> Rs {{ order.total_price }}</p>
+            <p><strong>Payment Method:</strong> {{ order.payment_method }}</p>
+            <p><strong>Payment Reference:</strong> {{ order.payment_reference }}</p>
+            <p><strong>Address:</strong> {{ order.address }}</p>
+            <p><strong>Date:</strong> {{ order.created_at }}</p>
+        </div>
+        {% empty %}
+        <div class="card">
+            <p>No orders found.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h3>Payments</h3>
+    <div class="card-container">
+        {% for payment in payments %}
+        <div class="card">
+            <h4>Payment ID: {{ payment.id }}</h4>
+            <p><strong>User:</strong> {{ payment.user.username }}</p>
+            <p><strong>Total Amount:</strong> Rs {{ payment.total_amount }}</p>
+            <p><strong>Payment Method:</strong> {{ payment.payment_method }}</p>
+            <p><strong>Card Number:</strong> {{ payment.card_number }}</p>
+            <p><strong>UPI ID:</strong> {{ payment.upi_id }}</p>
+            <p><strong>Bank Name:</strong> {{ payment.bank_name }}</p>
+            <p><strong>Address:</strong> {{ payment.address }}</p>
+            <p><strong>Date:</strong> {{ payment.created_at }}</p>
+        </div>
+        {% empty %}
+        <div class="card">
+            <p>No payments found.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Add pagination controls for both tables -->
+    <div class="pagination">
+        <h3>Order Pages</h3>
+        <div>
+            {% if completed_orders.has_previous %}
+                <a href="?page_orders={{ completed_orders.previous_page_number }}" class="paginate-link">Previous</a>
+            {% endif %}
+            <span>Page {{ completed_orders.number }} of {{ completed_orders.paginator.num_pages }}</span>
+            {% if completed_orders.has_next %}
+                <a href="?page_orders={{ completed_orders.next_page_number }}" class="paginate-link">Next</a>
+            {% endif %}
+        </div>
+
+        <h3>Payment Pages</h3>
+        <div>
+            {% if payments.has_previous %}
+                <a href="?page_payments={{ payments.previous_page_number }}" class="paginate-link">Previous</a>
+            {% endif %}
+            <span>Page {{ payments.number }} of {{ payments.paginator.num_pages }}</span>
+            {% if payments.has_next %}
+                <a href="?page_payments={{ payments.next_page_number }}" class="paginate-link">Next</a>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Graphical Representation -->
+    <div class="chart-container">
+        <div class="chart">
+            {{ order_count }} Orders
+        </div>
+        <div class="chart">
+            {{ payment_count }} Payments
+        </div>
+    </div>
+</body>
+</html>

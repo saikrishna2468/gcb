@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>user profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</head>
+<style>
+           /* Navbar Styling */
+           .navbar {
+            background-color: #6a1b9a;
+        }
+    
+        .navbar-brand {
+            color: #fff;
+            font-weight: bold;
+            font-size: 24px;
+        }
+    
+        .nav-link {
+            color: #fff !important;
+            font-size: 16px;
+            margin-right: 15px;
+            transition: color 0.3s;
+        }
+    
+        .nav-link:hover {
+            color: #f0e68c !important; /* Highlight color on hover */
+        }
+    
+        .dropdown-menu {
+            background-color: #6a1b9a;
+            border: none;
+        }
+    
+        .dropdown-item {
+            color: #fff !important;
+            transition: background-color 0.3s;
+        }
+    
+        .dropdown-item:hover {
+            background-color: #4a148c;
+        }
+    
+        /* Responsive Fixes */
+        @media (max-width: 992px) {
+            .nav-link {
+                font-size: 14px;
+                margin-right: 10px;
+            }
+        }
+    
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 10px 0;
+            }
+    
+            .nav-link {
+                margin-right: 5px;
+            }
+    
+            .navbar-brand {
+                font-size: 20px;
+            }
+        }
+
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+/* Portal Container Styles */
+.portal-container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 600px;
+    width: 100%;
+}
+
+/* Text Styles */
+p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #555;
+    margin: 10px 0;
+}
+
+/* Strong Text Styles */
+strong {
+    color: #333;
+}
+
+/* Membership Status Styles */
+.membership-status {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.membership-active {
+    background-color: #dff0d8;
+    color: #3c763d;
+}
+
+.membership-inactive {
+    background-color: #f2dede;
+    color: #a94442;
+}
+
+/* Referral Code Styles */
+.referral-code {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #eef;
+    color: #333;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+    .portal-container {
+        padding: 15px;
+    }
+    
+    h2 {
+        font-size: 1.8rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+}
+</style>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#"  style="font-size: 15px;">Global Reach Business</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+               
+                <li class="nav-item">
+                    <a class="nav-link"  href="{% url 'home' %}" style="font-size: 14px;">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'product_list' %}"  style="font-size: 14px;">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cart_page' %}"  style="font-size: 14px;">Cart</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'send_referral' %}"  style="font-size: 13px;">Send Referral</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'view_sent_referrals' %}" style="font-size: 13px;">View Sent Referrals</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'view_received_referrals' %}" style="font-size: 14px;">View Received Referrals</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'payment_history' %}" style="font-size: 14px;">Payment History</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'profit_history' %}" style="font-size: 14px;">Profit History</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}" style="font-size: 14px;">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <br>
+    <div style="display: flex;justify-content:left;margin-left:200px;">
+        <a style="font-size: 14px;color:purple;float:right;margin-right:40px; font-weight:900;" href="{% url 'membership_page' %}"  >membership</a>
+        <br>
+        <a style="font-size: 14px;color:purple;float:right;margin-right:40px; font-weight:900;" href="{% url 'user_portal' %}" >user_portal</a>
+        <br>  
+      
+        <a style="font-size: 14px;color:purple;float:right;margin-right:40px; font-weight:900;" href="{% url 'submit_feedback' %}">Submit Feedback</a>
+        <br>
+        <a style="font-size: 14px;color:purple;float:right;margin-right:40px; font-weight:900;" href="{% url 'feedback_history' %}">  feedback_history</a>
+      </div>
+      <br>
+     
+
+  <div class="portal-container" style="position: absolute;left:50%;top:60%;transform:translate(-50%,-50%)">
+    
+    <h2>User Portal</h2>
+
+    <p><strong>Username:</strong> {{ username }}</p>
+    <p><strong>Email:</strong> {{ email }}</p>
+    <p><strong>Mobile Number:</strong> {{ mobile_number }}</p>
+    <p><strong>Wallet Balance:</strong> Rs. {{ wallet_balance }}</p>
+
+    <div class="membership-status {% if is_member %}membership-active{% else %}membership-inactive{% endif %}">
+        {% if is_member %}
+            <p><strong>Membership Status:</strong> Active Member</p>
+        {% else %}
+            <p><strong>Membership Status:</strong> Not a Member</p>
+        {% endif %}
+    </div>
+
+    {% if referral_user %}
+        <p><strong>Referred By:</strong> {{ referral_user.username }}</p>
+    {% else %}
+        <p><strong>Referred By:</strong> None</p>
+    {% endif %}
+
+    <p><strong>Your Referral Code:</strong> <span class="referral-code">{{ referral_code|default:"Not Available" }}</span></p>
+</div>
+
+
+</body>
+</html>

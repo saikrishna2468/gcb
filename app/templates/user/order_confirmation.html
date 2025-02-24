@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .confirmation-message {
+            margin-top: 50px;
+            text-align: center;
+        }
+        .confirmation-message h2 {
+            font-size: 36px;
+            color: #28a745;
+        }
+        .confirmation-details {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="confirmation-message">
+        <h2>Thank You for Your Purchase!</h2>
+        <p>Your order has been successfully placed. We are processing your order and will notify you once it's ready for shipment.</p>
+    </div>
+
+    <div class="confirmation-details">
+        <h4>Order Summary</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.product.name }}</td>
+                    <td>{{ order.quantity }}</td>
+                    <td>Rs. {{ order.total_price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h5>Payment Details</h5>
+        <p><strong>Payment Method:</strong> {{ payment.method }}</p>
+        <p><strong>Transaction Date:</strong> {{ payment.paid_at }}</p>
+    </div>
+
+    <div class="confirmation-message">
+       
+    </div>
+</div>
+
+</body>
+</html>

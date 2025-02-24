@@ -1,0 +1,30 @@
+<!-- order_history.html -->
+<h2>Your Order History</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Total Price</th>
+            <th>Payment Method</th>
+            <th>Payment Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.product.name }}</td>
+            <td>{{ order.quantity }}</td>
+            <td>Rs. {{ order.product.price }}</td>
+            <td>Rs. {{ order.total_price }}</td>
+            <td>{{ order.payment.payment_method }}</td>
+            <td>{{ order.payment.payment_date }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if not orders %}
+    <p>You have not made any orders yet.</p>
+{% endif %}

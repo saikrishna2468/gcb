@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Card Styles */
+        body {
+            background-color: #f8f9fa; /* Light background for better contrast */
+        }
+
+        .card {
+            margin: 20px; /* Margin for cards */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+        }
+
+        .card-header {
+            background: linear-gradient(to right, #6f42c1, #5a27a4); /* Purple gradient background */
+            color: white; /* Header text color */
+        }
+
+        .btn {
+            margin: 5px; /* Space between buttons */
+            transition: transform 0.3s ease, background-color 0.3s ease; /* Smooth transition for buttons */
+        }
+
+        /* Button hover effect */
+        .btn:hover {
+            transform: scale(1.1); /* Slightly enlarge button */
+            background-color: #5a27a4; /* Darker purple background on hover */
+            color: white; /* Ensure text remains readable */
+        }
+
+        /* Button active effect */
+        .btn:active {
+            transform: scale(0.95); /* Slightly shrink button on click */
+        }
+
+        /* Chart Styles */
+        #userChart {
+            max-width: 600px; /* Limit chart width */
+            margin: 30px auto; /* Center align the chart */
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .card {
+                margin: 10px; /* Less margin on smaller screens */
+            }
+        }
+        /* Navbar Styles */
+        .nav-buttons {
+           display: flex;
+           justify-content: center;
+           flex-wrap: wrap;
+           gap: 15px;
+           margin: 20px 0;
+       }
+
+       .nav-buttons a {
+           padding: 12px 25px;
+           border-radius: 25px;
+           font-size: 16px;
+           color: #fff;
+           text-decoration: none;
+           transition: all 0.3s ease;
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+       }
+
+       .nav-buttons a.btn-success {
+           background-color: #28a745;
+           border: 2px solid #28a745;
+       }
+
+       .nav-buttons a.btn-info {
+           background-color: #17a2b8;
+           border: 2px solid #17a2b8;
+       }
+
+       .nav-buttons a.btn-danger {
+           background-color: #dc3545;
+           border: 2px solid #dc3545;
+       }
+
+       /* Button Hover Effects */
+       .nav-buttons a:hover {
+           transform: scale(1.05);
+           box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+       }
+
+       /* Animation Effects */
+       @keyframes fadeInUp {
+           0% {
+               opacity: 0;
+               transform: translateY(20px);
+           }
+
+           100% {
+               opacity: 1;
+               transform: translateY(0);
+           }
+       }
+
+       .nav-buttons a {
+           animation: fadeInUp 1s ease both;
+       }
+
+       .nav-buttons a:nth-child(1) {
+           animation-delay: 0.1s;
+       }
+
+       .nav-buttons a:nth-child(2) {
+           animation-delay: 0.2s;
+       }
+
+       .nav-buttons a:nth-child(3) {
+           animation-delay: 0.3s;
+       }
+
+       .nav-buttons a:nth-child(4) {
+           animation-delay: 0.4s;
+       }
+
+       .nav-buttons a:nth-child(5) {
+           animation-delay: 0.5s;
+       }
+
+       .nav-buttons a:nth-child(6) {
+           animation-delay: 0.6s;
+       }
+    </style>
+    <title>User Cards with Graphical Representation</title>
+</head>
+<body>
+      <!-- Navigation Buttons -->
+      <div class="nav-buttons text-center">
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-success">admin_dashboard</a>
+        <a href="{% url 'add_product' %}" class="btn btn-success">Add New Product</a>
+        <a href="{% url 'admin_product_list' %}" class="btn btn-success">Product List</a>
+        <a href="{% url 'admin_view_referrals' %}" class="btn btn-info">View Referral History</a>
+        <a href="{% url 'admin_payment_history' %}" class="btn btn-info">Payment History</a>
+        <a href="{% url 'referral_profits' %}" class="btn btn-info">Referral Profits</a>
+        <a href="{% url 'admin_user_list' %}" class="btn btn-info">User list</a>
+        <a href="{% url 'logout_admin' %}" class="btn btn-danger">Logout</a>
+    </div>
+
+<h3 class="text-center mt-4">Users</h3>
+<div class="container">
+    <div class="row">
+        {% for user in users %}
+        <div class="col-lg-4 col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">{{ user.username }}</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text"><strong>Mobile Number:</strong> {{ user.mobile_number }}</p>
+                    <p class="card-text"><strong>Email:</strong> {{ user.email }}</p>
+                    <p class="card-text"><strong>Age:</strong> {{ user.age }}</p>
+                    <p class="card-text"><strong>Referral Code:</strong> {{ user.referral_code }}</p>
+                    <p class="card-text"><strong>Wallet Balance:</strong> {{ user.wallet_balance }}</p>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{% url 'admin_edit_user' user.id %}" class="btn btn-primary">Edit</a>
+                    <form method="POST" action="{% url 'admin_delete_user' user.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?');">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Chart Container -->
+<div id="userChart">
+    <canvas id="chart"></canvas>
+</div>
+
+<script>
+    // Sample data for the chart (replace with actual data)
+    const usernames = {{ usernames|safe }}; // Use the usernames list passed from the view
+    const walletBalances = {{ wallet_balances|safe }}; // Use the wallet balances list passed from the view
+
+    const ctx = document.getElementById('chart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: usernames, // Use usernames as labels
+            datasets: [{
+                label: 'Wallet Balance',
+                data: walletBalances.map(Number), // Convert string to numbers
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(153, 102, 255, 0.6)',
+                    'rgba(255, 159, 64, 0.6)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                ],
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'User Wallet Balances'
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Navbar Styles */
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .nav-buttons a {
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-buttons a.btn-success {
+            background-color: #28a745;
+            border: 2px solid #28a745;
+        }
+
+        .nav-buttons a.btn-info {
+            background-color: #17a2b8;
+            border: 2px solid #17a2b8;
+        }
+
+        .nav-buttons a.btn-danger {
+            background-color: #dc3545;
+            border: 2px solid #dc3545;
+        }
+
+        /* Button Hover Effects */
+        .nav-buttons a:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Animation Effects */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .nav-buttons a {
+            animation: fadeInUp 1s ease both;
+        }
+
+        .nav-buttons a:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .nav-buttons a:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .nav-buttons a:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .nav-buttons a:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .nav-buttons a:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .nav-buttons a:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        .chart-container {
+            position: relative;
+            margin: auto;
+            max-width: 100%;
+        }
+
+        .user-chart-container {
+            text-align: center; /* Center align the user chart */
+            margin-bottom: 30px; /* Space below the user chart */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Buttons -->
+    <div class="nav-buttons text-center">
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-success">admin_dashboard</a>
+        <a href="{% url 'add_product' %}" class="btn btn-success">Add New Product</a>
+        <a href="{% url 'admin_product_list' %}" class="btn btn-success">Product List</a>
+        <a href="{% url 'admin_view_referrals' %}" class="btn btn-info">View Referral History</a>
+        <a href="{% url 'admin_payment_history' %}" class="btn btn-info">Payment History</a>
+        <a href="{% url 'referral_profits' %}" class="btn btn-info">Referral Profits</a>
+        <a href="{% url 'admin_user_list' %}" class="btn btn-info">User list</a>
+        <a class="btn btn-info" href="{% url 'admin_feedback_list' %}">Admin Feedback List</a> <!-- Only for admin users -->
+        <a href="{% url 'logout_admin' %}" class="btn btn-danger">Logout</a>
+    </div>
+
+    <div class="container">
+        <h2 class="text-center my-4">Admin Dashboard</h2>
+
+        <!-- User Statistics -->
+        <div class="user-chart-container">
+            <h5>User Statistics</h5>
+            <div class="chart-container">
+                <canvas id="userChart"></canvas> <!-- Chart for users -->
+            </div>
+            <p>
+                This chart displays the total number of users registered on the platform. A higher user count indicates a growing community and potential for increased engagement and sales. Monitoring user growth is crucial for making informed marketing decisions and understanding user behavior over time.
+            </p>
+        </div>
+
+        <!-- Graphical representation of category and product counts -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="">
+                    <div class="card-header text-center">
+                        <h5>Category Statistics</h5>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="categoryChart"></canvas> <!-- Chart for categories -->
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            This chart shows the total number of product categories available in the system. Understanding the distribution of categories helps in identifying popular areas and potential gaps in your product offerings. This data can inform inventory decisions and marketing strategies.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="">
+                    <div class="card-header text-center">
+                        <h5>Product Statistics</h5>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="productChart"></canvas> <!-- Chart for products -->
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            This chart illustrates the total number of products currently available for purchase. Tracking product counts is essential for managing stock levels and ensuring that popular items remain available to customers. Regular analysis can also highlight trends in product performance.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Graphical representation of payment methods and referral profits -->
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="">
+                    <div class="card-header text-center">
+                        <h5>Payments by Method</h5>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="paymentChart"></canvas> <!-- Payment methods chart -->
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            This chart displays the distribution of payments made through different methods. Analyzing payment trends can help you understand customer preferences and optimize payment options available on your platform. This insight can enhance user experience and increase conversion rates.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="">
+                    <div class="card-header text-center">
+                        <h5>Referral Profits</h5>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="referralProfitsChart"></canvas> <!-- Referral profits chart -->
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            This chart represents the total referral profits generated over a specific period. Understanding referral performance can help in evaluating the effectiveness of your referral programs. By tracking these profits, you can make data-driven decisions to enhance your referral marketing strategies.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart.js Script to render charts -->
+    <script>
+        // Data passed from Django context to JavaScript
+        const userCount = {{ user_count }};
+        const categoryCount = {{ category_count }};
+        const productCount = {{ product_count }};
+        const referralProfits = {{ referral_profits }};
+        const paymentLabels = {{ payment_labels|safe }};  // Ensure data is passed safely
+        const paymentData = {{ payment_data|safe }};  // Ensure data is passed safely
+
+        // User chart
+        const ctxUser = document.getElementById('userChart').getContext('2d');
+        const userChart = new Chart(ctxUser, {
+            type: 'doughnut',
+            data: {
+                labels: ['Total Users'],
+                datasets: [{
+                    data: [userCount],
+                    backgroundColor: ['#007bff'],
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: 'User Count'
+                }
+            }
+        });
+
+        // Category chart
+        const ctxCategory = document.getElementById('categoryChart').getContext('2d');
+        const categoryChart = new Chart(ctxCategory, {
+            type: 'bar',
+            data: {
+                labels: ['Total Categories'],
+                datasets: [{
+                    data: [categoryCount],
+                    backgroundColor: ['#28a745'],
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: 'Category Count'
+                }
+            }
+        });
+
+        // Product chart
+        const ctxProduct = document.getElementById('productChart').getContext('2d');
+        const productChart = new Chart(ctxProduct, {
+            type: 'line',
+            data: {
+                labels: ['Total Products'],
+                datasets: [{
+                    data: [productCount],
+                    backgroundColor: ['#ffc107'],
+                    borderColor: '#ffc107',
+                    fill: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: 'Product Count'
+                }
+            }
+        });
+
+        // Payment method chart
+        const ctxPayment = document.getElementById('paymentChart').getContext('2d');
+        const paymentChart = new Chart(ctxPayment, {
+            type: 'pie',
+            data: {
+                labels: paymentLabels,
+                datasets: [{
+                    data: paymentData,
+                    backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545'],
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: 'Payments by Method'
+                }
+            }
+        });
+
+        // Referral profits chart
+        const ctxReferralProfits = document.getElementById('referralProfitsChart').getContext('2d');
+        const referralProfitsChart = new Chart(ctxReferralProfits, {
+            type: 'bar',
+            data: {
+                labels: ['Referral Profits'],
+                datasets: [{
+                    data: [referralProfits],
+                    backgroundColor: ['#17a2b8'],
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: 'Referral Profits'
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

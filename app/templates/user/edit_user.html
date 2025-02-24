@@ -1,0 +1,26 @@
+<h2>Edit User</h2>
+<form method="POST">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" name="username" id="username" value="{{ user.username }}" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="mobile_number" class="form-label">Mobile Number</label>
+        <input type="text" name="mobile_number" id="mobile_number" value="{{ user.mobile_number }}" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" name="email" id="email" value="{{ user.email }}" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="age" class="form-label">Age</label>
+        <input type="number" name="age" id="age" value="{{ user.age }}" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="wallet_balance" class="form-label">Wallet Balance</label>
+        <input type="number" name="wallet_balance" id="wallet_balance" value="{{ user.wallet_balance }}" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-success">Save Changes</button>
+    <a href="{% url 'admin_user_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
