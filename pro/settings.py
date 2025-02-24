@@ -2,7 +2,11 @@ import os
 from pathlib import Path
 from decouple import config  # Ensure you have python-decouple installed
 from django.core.wsgi import get_wsgi_application
+import os
+from django.core.wsgi import get_wsgi_application
 
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'your_project_name.settings')
+application = get_wsgi_application()
 # BASE DIRECTORY
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -42,7 +46,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # URL CONFIGURATION
 ROOT_URLCONF = 'pro.urls'
 WSGI_APPLICATION = 'pro.wsgi.application'
@@ -51,11 +55,11 @@ WSGI_APPLICATION = 'pro.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME', default='your_db_name'),
-        'USER': config('DB_USER', default='your_db_user'),
-        'PASSWORD': config('DB_PASSWORD', default='your_db_password'),
-        'HOST': config('DB_HOST', default='127.0.0.1'),
-        'PORT': config('DB_PORT', default='5432'),
+        'NAME': os.getenv('DB_NAME', default='your_db_name'),
+        'USER': os.getenv('DB_USER', default='your_db_user'),
+        'PASSWORD': os.getenv('DB_PASSWORD', default='your_db_password'),
+        'HOST': os.getenv('DB_HOST', default='127.0.0.1'),
+        'PORT': os.getenv('DB_PORT', default='5432'),
     }
 }
 
